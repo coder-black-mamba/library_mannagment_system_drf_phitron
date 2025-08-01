@@ -15,7 +15,14 @@ from rest_framework.decorators import api_view
 @api_view(['GET','POST'])
 def borrow_list(request):
     if request.method == 'GET':
-        borrow = Borrow.objects.all()
+        member_id = request.GET.get('member_id')
+        book_id = request.GET.get('book_id')
+        if member_id is not None:
+            borrow = Borrow.objects.filter(member_id=member_id)
+        elif book_id is not None:
+            borrow = Borrow.objects.filter(book_id=book_id)
+        else:
+            borrow = Borrow.objects.all()
         serializer = BorrowSerializer(borrow, many=True)
         return Response(serializer.data)
     elif request.method == 'POST':
