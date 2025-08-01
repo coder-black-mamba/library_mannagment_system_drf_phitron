@@ -7,6 +7,7 @@ from books.models import Member
 class Borrow(models.Model):
     book = models.ForeignKey(Book, on_delete=models.DO_NOTHING)
     member = models.ForeignKey(Member, on_delete=models.DO_NOTHING)
+    returned= models.BooleanField(default=False)
     borrow_date = models.DateTimeField(auto_now_add=True)
     return_date = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)

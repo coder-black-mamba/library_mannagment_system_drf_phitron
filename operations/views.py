@@ -65,7 +65,9 @@ def return_book(request,pk):
             book.available = True
             book.save()
             if serializer.is_valid():
-                serializer.save()
+                borrow = Borrow.objects.get(pk=pk)
+                borrow.returned = True
+                borrow.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response({"error": "Book is not available"}, status=status.HTTP_400_BAD_REQUEST)
