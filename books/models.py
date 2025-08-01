@@ -9,11 +9,17 @@ class Author(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.name
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Book(models.Model):
@@ -24,7 +30,10 @@ class Book(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     available = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)    
+    updated_at = models.DateTimeField(auto_now=True)   
+
+    def __str__(self):
+        return self.title
 
 
 # Later Will Be Replaced by User Model
@@ -35,4 +44,7 @@ class Member(models.Model):
     address = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
 

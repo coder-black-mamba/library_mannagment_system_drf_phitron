@@ -1,15 +1,15 @@
-from django.http import HttpResponse
-from django.urls import path
+from django.urls import path,include
 from rest_framework.routers import DefaultRouter
-# from .views import BookViewSet
 
-# router = DefaultRouter()
-# router.register(r'books', BookViewSet)
+from books.views import BookViewSet , MemberViewSet , AuthorViewSet , CategoryViewSet
 
-def hello_world(request):
-    return HttpResponse("Hello World from api/v1/")
-
+router = DefaultRouter()
+router.register("books",BookViewSet,basename="books")
+router.register("members",MemberViewSet,basename="members")
+router.register("authors",AuthorViewSet,basename="authors")
+router.register("categories",CategoryViewSet,basename="categories")
 
 urlpatterns = [
-    path('', hello_world),
+    path("",include(router.urls)),
+    path("operations/",include("operations.urls")),
 ]
