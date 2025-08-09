@@ -1,6 +1,5 @@
 from django.urls import path,include
 from rest_framework.routers import DefaultRouter
-
 from books.views import BookViewSet , MemberViewSet , AuthorViewSet , CategoryViewSet
 
 router = DefaultRouter()
@@ -11,5 +10,8 @@ router.register("categories",CategoryViewSet,basename="categories")
 
 urlpatterns = [
     path("",include(router.urls)),
+    path("auth/",include("djoser.urls")),
+    path("auth/",include("djoser.urls.jwt")),
     path("operations/",include("operations.urls")),
+    
 ]
