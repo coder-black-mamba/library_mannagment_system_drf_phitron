@@ -15,9 +15,4 @@ from django.core.wsgi import get_wsgi_application
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "library_mannagment_system.settings")
 
 # This is the standard Django WSGI application
-application = get_wsgi_application()
-
-# This is the handler that Vercel will use
-# It's just an alias to the standard Django application
-# custom commit to reintializedeployment
-handler = application
+app=get_wsgi_application()
