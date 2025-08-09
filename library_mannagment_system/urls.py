@@ -15,6 +15,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from drf_yasg import openapi
+from drf_yasg.generators import OpenAPISchemaGenerator
 from django.contrib import admin
 from django.urls import path, include
 from django.http import HttpResponse
@@ -36,19 +38,42 @@ urlpatterns = [
 
 
 
+# schema_view = get_schema_view(
+#    openapi.Info(
+#       title="Library API",
+#       default_version='v1',
+#       description="Library API for managing books and members",
+#       terms_of_service="https://www.google.com/policies/terms/",
+#       contact=openapi.Contact(email="contact@snippets.local"),
+#       license=openapi.License(name="BSD License"),
+#    ),
+#    public=True,
+#    permission_classes=(permissions.AllowAny,),
+#    authentication_classes=[],
+# )
+
+class CustomSchemaGenerator(OpenAPISchemaGenerator):
+    def get_endpoints(self, request):
+        # Get all endpoints
+        endpoints = super().get_endpoints(request)
+        # Filter out anything with 'login' in the path
+        endpoints = {k: v for k, v in endpoints.items() if "login" not in k}
+        return endpoints
+
 schema_view = get_schema_view(
    openapi.Info(
-      title="Snippets API",
+      title="Library API",
       default_version='v1',
-      description="Test description",
+      description="Library API for managing books and members",
       terms_of_service="https://www.google.com/policies/terms/",
       contact=openapi.Contact(email="contact@snippets.local"),
       license=openapi.License(name="BSD License"),
    ),
    public=True,
    permission_classes=(permissions.AllowAny,),
+   authentication_classes=[],
+   generator_class=CustomSchemaGenerator,  # << added here
 )
-
 urlpatterns += [
    path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
