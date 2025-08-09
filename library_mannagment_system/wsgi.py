@@ -19,4 +19,5 @@ application = get_wsgi_application()
 
 # This is the handler that Vercel will use
 # It's just an alias to the standard Django application
+# custom commit to reintializedeployment
 handler = application
