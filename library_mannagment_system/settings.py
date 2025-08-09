@@ -134,7 +134,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = "static/"
+# This is the folder where `collectstatic` will gather all static files
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+# Optional: if you also keep some static files in your app or project
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
 # Bearer settings
 # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
 

@@ -24,6 +24,8 @@ from django.urls import re_path
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from django.conf import settings
+from django.conf.urls.static import static
 
 def test_view(request):
     return HttpResponse("Hello World From /")
@@ -34,7 +36,7 @@ urlpatterns = [
     path("test/", test_view),
     path("api/v1/", include("api.urls")),
 ]
-
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
 
@@ -74,6 +76,7 @@ schema_view = get_schema_view(
    authentication_classes=[],
    generator_class=CustomSchemaGenerator,  # << added here
 )
+
 urlpatterns += [
    path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
