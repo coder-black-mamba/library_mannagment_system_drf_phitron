@@ -77,7 +77,126 @@ library_management_system/
 
 ## API Documentation
 
-API documentation is available at `/api/docs/` when the development server is running.
+The Library Management System provides a RESTful API built with Django REST Framework. Below are the main endpoints and their usage:
+
+### Authentication
+All API endpoints require authentication. Use JWT tokens for authentication.
+
+```http
+POST /auth/jwt/create/
+Content-Type: application/json
+
+{
+    "username": "your_username",
+    "password": "your_password"
+}
+```
+
+Include the token in subsequent requests:
+```
+Authorization: JWT your_token_here
+```
+
+### Available Endpoints
+
+#### 1. Borrow a Book
+
+**Endpoint**: `POST /api/v1/operations/borrow/`  
+**Description**: Borrow a book from the library  
+**Authentication**: Required  
+**Request Body**:
+```json
+{
+    "book": 1,
+    "member": 1
+}
+```
+**Response (Success - 201 Created)**:
+```json
+{
+    "id": 1,
+    "book": 1,
+    "member": 1,
+    "borrow_date": "2023-01-01",
+    "return_date": null,
+    "status": "borrowed"
+}
+```
+
+#### 2. List Borrowed Books
+
+**Endpoint**: `GET /api/v1/operations/borrow/`  
+**Description**: List all borrowed books with optional filtering  
+**Authentication**: Required  
+**Query Parameters**:
+- `member_id` (optional): Filter by member ID
+- `book_id` (optional): Filter by book ID
+
+**Example**: `GET /api/v1/operations/borrow/?member_id=1`
+
+**Response (200 OK)**:
+```json
+[
+    {
+        "id": 1,
+        "book": 1,
+        "member": 1,
+        "borrow_date": "2023-01-01",
+        "return_date": null,
+        "status": "borrowed"
+    }
+]
+```
+
+#### 3. Return a Book
+
+**Endpoint**: `POST /api/v1/operations/return/<borrow_id>/`  
+**Description**: Return a borrowed book  
+**Authentication**: Required  
+**URL Parameters**:
+- `borrow_id`: ID of the borrow record
+
+**Response (200 OK)**:
+```json
+{
+    "message": "Book returned successfully",
+    "borrow_id": 1,
+    "book_id": 1,
+    "return_date": "2023-01-10"
+}
+```
+
+#### 4. View Borrow Record
+
+**Endpoint**: `GET /api/v1/operations/return/<borrow_id>/`  
+**Description**: Get details of a specific borrow record  
+**Authentication**: Required
+
+**Response (200 OK)**:
+```json
+{
+    "id": 1,
+    "book": 1,
+    "member": 1,
+    "borrow_date": "2023-01-01",
+    "return_date": "2023-01-10",
+    "status": "returned"
+}
+```
+
+### Error Responses
+
+#### 400 Bad Request
+- Invalid input data
+- Book is not available for borrowing
+- Book is already returned
+
+#### 401 Unauthorized
+- Missing or invalid authentication credentials
+
+#### 404 Not Found
+- Borrow record not found
+- Book or member not found
 
 ## Contributing
 
